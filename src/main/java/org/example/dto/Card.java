@@ -5,11 +5,17 @@ import lombok.Setter;
 import lombok.ToString;
 import org.example.enums.Status;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
+@Entity
+@Table(name = "atto_card")
 public class Card {
+    @Id
     private Integer id;
     private String number;
     private String exp_date;
