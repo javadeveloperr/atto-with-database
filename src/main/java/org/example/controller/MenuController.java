@@ -86,7 +86,40 @@ public class MenuController {
         if (isAdmin(phone,password)){
             ComponentController.adminMenuController.adminMenu();
         }else {
-            System.out.println("User menyunu yasang");
+            userMenu();
+        }
+    }
+    public void userMenu(){
+        System.out.println("*** User  Menu **\n" +
+                "    (Card)\n" +
+                "    1. Add Card (number) - (cartani profile ga ulab qo'yamiz.) (added_date)\n" +
+                "        Enter Card Number:\n" +
+                "        (kiritilgan number database da bo'lishi kerak.)\n" +
+                "    2. Card List (number,exp_date,balance)\n" +
+                "    3. Card Change Status\n" +
+                "    4. Delete Card (visible_user = false,deleted_user)\n" +
+                "\n" +
+                "    4. ReFill (pul tashlash) (carta userga tegishli bo'lishi kerak.)\n" +
+                "        Enter card number:\n" +
+                "        Balance:\n" +
+                "        (Transaction with type 'ReFill')\n" +
+                "\n" +
+                "    (Transaction)\n" +
+                "    5. Transaction\n" +
+                "        CardNumber, Address, Amount,TransactionDate,Type (oxirgi birinchi ko'rinadi)\n" +
+                "    6. Make Payment (pul to'lash)\n" +
+                "        Enter cardNumber:\n" +
+                "        Enter terminal number:\n" +
+                "        (Transaction with type 'Payment')\n" +
+                "0. Exit ");
+        Boolean b = true;
+        while (b) {
+            int action;
+            action = action();
+            switch (action) {
+                case 1 -> ComponentController.cardController.setPhoneUser();
+                    case 0 -> b=false;
+            }
         }
     }
 }

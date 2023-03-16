@@ -25,7 +25,7 @@ public class CardDB {
         try {
             String attoCard = "create table if not exists atto_card( " +
                     "                id serial primary key, " +
-                    "                number varchar(16) not null, " +
+                    "                number varchar(16) unique not null, " +
                     "                exp_date date not null, " +
                     "                balance double precision not null," +
                     "                status varchar(10) not null," +

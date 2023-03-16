@@ -1,7 +1,6 @@
 package org.example.service;
 
 import org.example.container.ComponentController;
-import org.example.controller.CardController;
 import org.example.dto.Card;
 import org.example.enums.Status;
 import org.example.util.ScannerUtil;
@@ -52,5 +51,9 @@ public class CardService {
             }
 
         ComponentController.cardRepository.updateCardStatusAdmin(cardNum,status);
+    }
+    public void setCardProfilePhone(String phone, String cardNumber){
+        Integer profileIdByPhone = ComponentController.cardRepository.getProfileIdByPhone(phone);
+        ComponentController.cardRepository.addCardUser(cardNumber,profileIdByPhone,phone);
     }
 }

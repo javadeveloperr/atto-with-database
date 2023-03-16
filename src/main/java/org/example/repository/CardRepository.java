@@ -2,6 +2,7 @@ package org.example.repository;
 
 import org.example.container.ComponentController;
 import org.example.dto.Card;
+import org.example.dto.Profile;
 import org.example.enums.Status;
 
 import java.sql.*;
@@ -109,7 +110,8 @@ public class CardRepository {
         }
 
     }
-    public void updateCardAdmin(String cardNumber, LocalDate date){
+
+    public void updateCardAdmin(String cardNumber, LocalDate date) {
 
         try {
             Connection connection = org.example.db.Connection.getConnection();
@@ -128,12 +130,71 @@ public class CardRepository {
         }
     }
 
-    public void updateCardStatusAdmin(String cardNumber, Status status){
+    public void updateCardStatusAdmin(String cardNumber, Status status) {
         try {
             Connection connection = org.example.db.Connection.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("update atto_card set status=? where number=?");
             preparedStatement.setString(1, String.valueOf(status));
             preparedStatement.setString(2, cardNumber);
+//            ResultSet resultSet = preparedStatement.executeQuery();
+            int effectedRows = preparedStatement.executeUpdate();
+            if (effectedRows == 1) {
+                System.out.println("Success");
+                return;
+            }
+            connection.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Integer getProfileIdByPhone(String phoneNumber) {
+        Profile profile = null;
+        try {
+            Connection connection = org.example.db.Connection.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement("select id from atto_p where phone=?");
+            preparedStatement.setString(1, String.valueOf(phoneNumber));
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                profile = ComponentController.profile;
+                profile.setId(resultSet.getInt("id"));
+            }
+            connection.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return profile.getId();
+    }
+
+    public void addCardUser(String cardNumber, Integer profileId, String phoneNumber) {
+        try {
+            Connection connection = org.example.db.Connection.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement("update atto_card set phone=? where number=?");
+            preparedStatement.setString(1, phoneNumber);
+            preparedStatement.setString(2, cardNumber);
+            PreparedStatement preparedStatement1= connection.prepareStatement("update atto_card set profile_id=? where number=?");
+            preparedStatement.setInt(1, profileId);
+            preparedStatement.setString(2, cardNumber);
+//            ResultSet resultSet = preparedStatement.executeQuery();
+
+            int effectedRows = preparedStatement.executeUpdate();
+            int effectedRows1 = preparedStatement1.executeUpdate();
+            if (effectedRows == 1 && effectedRows1 == 1) {
+                System.out.println("Success");
+                return;
+            }
+            connection.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+    public void refillCard(String cardNum, Double amount){
+        try {
+            Connection connection = org.example.db.Connection.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement("update atto_card set balance=balance+? where number=?");
+            preparedStatement.setDouble(1, amount);
+            preparedStatement.setString(2, cardNum);
 //            ResultSet resultSet = preparedStatement.executeQuery();
             int effectedRows = preparedStatement.executeUpdate();
             if (effectedRows == 1) {

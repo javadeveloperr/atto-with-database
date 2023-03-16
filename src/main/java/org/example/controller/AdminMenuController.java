@@ -1,12 +1,6 @@
 package org.example.controller;
-
 import org.example.container.ComponentController;
-import org.example.util.ScannerUtil;
-
-import java.time.LocalDateTime;
-
 import static org.example.controller.MenuController.action;
-
 public class AdminMenuController {
     public void adminMenu() {
         System.out.println("*** Admin Menu ***\n" +
@@ -34,37 +28,31 @@ public class AdminMenuController {
                 "    18. Umumiy balance (company card dagi pulchalar)\n" +
                 "    19. Transaction by Terminal:\n" +
                 "    20. Transaction By Card:\n");
-
         Boolean b = true;
         while (b) {
             int action;
             action = action();
-
             switch (action) {
-                case 1 -> {
-                    System.out.println("Enter card number : ");
-                    String cardNum = ScannerUtil.StringScanner.next().trim();
-                    ComponentController.card.setNumber(cardNum);
-                    System.out.println("Enter Exp date : ");
-                    String expDate = ScannerUtil.StringScanner.next().trim();
-                    ComponentController.card.setExp_date(expDate);
-                    ComponentController.cardService.createCard(ComponentController.card);
-                }
+                case 1 -> ComponentController.cardController.addCard();
                 case 2 -> ComponentController.cardController.cardListAdmin();
                 case 3 -> ComponentController.cardController.updateCardAdmin();
                 case 4 -> ComponentController.cardController.updateCardStatusAdmin();
-                case 5 -> {
-                    System.out.println("Enter card number : ");
-                    String cardOfNum = ScannerUtil.StringScanner.next().trim();
-                    ComponentController.cardController.deleteCardByNumber(cardOfNum);
-                }
+                case 5 -> ComponentController.cardController.deleteCardByNumber();
                 case 6 -> ComponentController.terminalController.createTerminal();
                 case 7 -> ComponentController.terminalController.terminalList();
                 case 8 -> ComponentController.terminalController.updateTerminal();
                 case 9 -> ComponentController.terminalController.changeTerminalStatus();
                 case 10 -> ComponentController.terminalController.deleteTerminal();
+                case 11 -> ComponentController.userController.printProfiles();
+                case 12 -> ComponentController.userController.changeProfileStatus();
+                case 13 -> ComponentController.transactionController.getTransactionsList();
+                case 14 -> ComponentController.transactionController.getCompanyBalance();
+                case 15 -> ComponentController.transactionController.getTodayTransaction();
+                case 16 -> ComponentController.transactionController.getDayTransaction();
+                case 17 -> ComponentController.transactionController.getIntermediateDayTransaction();
+                case 18 -> ComponentController.transactionController.getTransactionByTerminal();
+                case 19 -> ComponentController.transactionController.getTransactionByCard();
                 case 0 -> b = false;
-
             }
         }
     }

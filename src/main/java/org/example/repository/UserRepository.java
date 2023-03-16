@@ -63,8 +63,9 @@ public class UserRepository {
             String sql = "select * from atto_p;";
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
-            Profile profile=ComponentController.profile;
+            Profile profile=null;
             while (resultSet.next()) {
+                profile=ComponentController.profile;
                 profile.setId(resultSet.getInt("id"));
                 profile.setName(resultSet.getString("name"));
                 profile.setSurname(resultSet.getString("surname"));
@@ -79,5 +80,21 @@ public class UserRepository {
             sqlException.printStackTrace();
         }
         return result;
+    }
+    public void updateUserStatus(String phone, Status status){
+        try {
+            Connection connection = org.example.db.Connection.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement("update atto_p set status=? where phone=?");
+            preparedStatement.setString(1, String.valueOf(status));
+            preparedStatement.setString(2, phone);
+            int effectedRows = preparedStatement.executeUpdate();
+            if (effectedRows == 1) {
+                System.out.println("Success");
+                return;
+            }
+            connection.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
